@@ -1,202 +1,95 @@
 "use client";
 
-import { FadeIn, AnimatedText, TracingBeam } from "./utils";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
+
+const features = [
+  {
+    title: "Unfiltered Perspectives",
+    description: "Get insights from real ANU students with detailed ratings and authentic reviews for every course. We prioritize transparency over generic course outlines.",
+    items: [
+      "Overall course quality score",
+      "Actual difficulty level indicators",
+      "Professor effectiveness",
+      "True workload assessments"
+    ]
+  },
+  {
+    title: "Precision Indexing",
+    description: "Find exactly what you're looking for with our powerful search and filtering system. Navigate the academic catalog with purpose.",
+    items: [
+      "Filter by subject, tier, and keywords",
+      "Sort by student satisfaction or difficulty",
+      "Compare multiple courses directly",
+      "Bookmark your essential syllabus"
+    ]
+  },
+  {
+    title: "Active Discourse",
+    description: "Connect with fellow ANU peers to ask questions and share hard-earned experiences. A forum dedicated to academic survival.",
+    items: [
+      "Course-specific discussion threads",
+      "Anonymous candor",
+      "Prerequisite navigation advice",
+      "Shared study resources"
+    ]
+  },
+];
 
 export const Features = () => {
-  return (
-    <section id="features" className="section-padding overflow-hidden relative">
-      <div className="absolute inset-0 bg-grid-white/[0.05] -z-10" />
-      
-      <div className="container mx-auto">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <AnimatedText text="Everything You Need to Choose the Right Courses" />
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="text-foreground/70 max-w-2xl mx-auto">
-              RateMyANU provides comprehensive tools and insights to help you make informed decisions about your academic journey at Australian National University.
-            </p>
-          </FadeIn>
-        </div>
+  const [mounted, setMounted] = useState(false);
 
-        <TracingBeam className="mx-auto max-w-4xl">
-          {features.map((feature, index) => (
-            <FeatureCard 
-              key={feature.title}
-              feature={feature}
-              index={index}
-            />
-          ))}
-        </TracingBeam>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <section id="features" className="py-24 lg:py-32 border-b-2 border-primary bg-secondary/30">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          
+          <div className="lg:col-span-4">
+             <div className={`sticky top-24 opacity-0 ${mounted ? 'animate-fadeIn' : ''}`}>
+               <h2 className="text-4xl md:text-6xl font-serif font-normal leading-none tracking-tight text-primary mb-6">
+                The Index of Essentials.
+               </h2>
+               <p className="text-lg font-serif text-foreground/70 border-l-2 border-primary pl-4">
+                 Our methodology is simple: gather the data, expose the truth, and equip you for the semester ahead.
+               </p>
+             </div>
+          </div>
+
+          <div className="lg:col-span-8 flex flex-col pt-8 lg:pt-0">
+            {features.map((feature, index) => (
+              <div 
+                key={feature.title} 
+                className={`flex flex-col md:flex-row gap-6 md:gap-12 py-12 border-t-2 border-primary/20 first:border-t-0 first:pt-0 last:pb-0 opacity-0 ${mounted ? 'animate-fadeInUp' : ''}`}
+                style={{ animationDelay: `${0.2 + index * 0.15}s` }}
+              >
+                <div className="md:w-16 font-mono text-3xl font-bold text-primary/30 shrink-0">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-3xl font-serif font-medium text-foreground">{feature.title}</h3>
+                  <p className="text-lg text-foreground/70 leading-relaxed font-serif max-w-2xl">{feature.description}</p>
+                  
+                  {feature.items && (
+                    <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {feature.items.map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-start gap-3">
+                          <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0" />
+                          <span className="font-mono text-sm tracking-tight text-foreground/80">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
       </div>
     </section>
   );
 };
-
-const FeatureCard = ({ 
-  feature, 
-  index 
-}: { 
-  feature: (typeof features)[number];
-  index: number;
-}) => {
-  return (
-    <FadeIn
-      delay={0.1 * index}
-      className="mb-12 last:mb-0 relative"
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ 
-          duration: 0.5,
-          delay: 0.2 * index,
-          type: "spring", 
-          stiffness: 150,
-        }}
-        viewport={{ once: true }}
-        className="relative rounded-xl border bg-background/50 backdrop-blur-sm p-6 shadow-md"
-      >
-        <div className="relative z-10">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-            <feature.icon 
-              className="h-6 w-6 text-primary" 
-            />
-          </div>
-          <h3 className="mb-2 text-xl font-bold text-foreground">{feature.title}</h3>
-          <p className="text-muted-foreground">{feature.description}</p>
-
-          {feature.items && (
-            <ul className="mt-4 space-y-2">
-              {feature.items.map((item, itemIndex) => (
-                <motion.li
-                  key={itemIndex}
-                  className="flex items-center gap-2 text-foreground/80"
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + itemIndex * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <CheckIcon className="h-5 w-5 text-primary/80" />
-                  {item}
-                </motion.li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Background gradient */}
-        <div 
-          className={cn(
-            "absolute inset-0 rounded-xl opacity-30",
-            index % 2 === 0 
-              ? "bg-gradient-to-tr from-primary/5 via-transparent to-primary/5" 
-              : "bg-gradient-to-bl from-primary/5 via-transparent to-primary/5"
-          )}
-        />
-      </motion.div>
-    </FadeIn>
-  );
-};
-
-const CheckIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    className={className}
-  >
-    <path d="M20 6L9 17L4 12" />
-  </svg>
-);
-
-const StarIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    className={className}
-  >
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </svg>
-);
-
-const SearchIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    className={className}
-  >
-    <circle cx="11" cy="11" r="8" />
-    <path d="M21 21L16.65 16.65" />
-  </svg>
-);
-
-const ChatIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    className={className}
-  >
-    <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
-    <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-  </svg>
-);
-
-const features = [
-  {
-    icon: StarIcon,
-    title: "Course Ratings & Reviews",
-    description: "Get insights from real ANU students with detailed ratings and authentic reviews for every course.",
-    items: [
-      "Overall course quality score",
-      "Difficulty level indicators",
-      "Professor ratings and teaching styles",
-      "Workload assessments"
-    ]
-  },
-  {
-    icon: SearchIcon,
-    title: "Advanced Course Search",
-    description: "Find exactly what you're looking for with our powerful search and filtering system.",
-    items: [
-      "Filter by subject, level, and keywords",
-      "Sort by rating, difficulty, or popularity",
-      "Compare multiple courses side by side",
-      "Save favorites for later reference"
-    ]
-  },
-  {
-    icon: ChatIcon,
-    title: "Community Discussions",
-    description: "Connect with fellow ANU students to ask questions and share experiences.",
-    items: [
-      "Course-specific discussion threads",
-      "Anonymous posting options",
-      "Helpful advice on prerequisites",
-      "Study resources and tips"
-    ]
-  },
-]; 

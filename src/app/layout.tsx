@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Figtree } from "next/font/google";
+import { Gelasio, Ubuntu_Mono } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { createClient } from "@/utils/supabase/server";
@@ -15,10 +15,18 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const font = Figtree({
-  weight: ['400'],
+const fontMono = Ubuntu_Mono({
+  weight: ['400', '700'],
   subsets: ['latin'],
-  display: 'auto',
+  display: 'swap',
+  variable: '--font-mono',
+})
+
+const fontSans = Gelasio({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
 })
 
 export default async function RootLayout({
@@ -28,7 +36,7 @@ export default async function RootLayout({
   const { data: { user } } = await supabase.auth.getUser();
   
   return (
-    <html lang="en" className={`${font.className}`}>
+    <html lang="en" className={`${fontSans.variable} ${fontMono.variable} ${fontSans.className}`}>
       <body>
         <TRPCReactProvider>
           <AuthProvider user={user}>

@@ -1,82 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { FadeIn, BackgroundGradient } from "./utils";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 
 export const CallToAction = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <section className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div
-          className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          animate={{
-            x: [0, 30, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute top-2/4 right-1/4 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-      </div>
-      
-      <div className="rounded-2xl max-w-5xl mx-auto shadow-lg bg-background/80 backdrop-blur-sm">
-        <div className="py-16 px-8 md:px-16 text-center flex flex-col items-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Make Smarter Course Choices?
-            </h2>
-          </FadeIn>
-          
-          <FadeIn delay={0.2}>
-            <p className="text-foreground/70 max-w-2xl mx-auto mb-8">
-              Join thousands of ANU students who use RateMyANU to find the perfect courses for their academic journey. Sign up today and start exploring real student reviews and ratings.
-            </p>
-          </FadeIn>
-          
-          <FadeIn delay={0.4}>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md mx-auto">
-              <Link href="/login" className="w-full">
-                <Button 
-                  size="lg" 
-                  className="w-full relative overflow-hidden group"
-                >
-                  <motion.span 
-                    className="absolute inset-0 w-full h-full bg-gradient-to-r from-amber-600 to-primary transition-transform -translate-x-full group-hover:translate-x-0 duration-300"
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "-100%" }}
-                    whileHover={{ x: "0%" }}
-                  />
-                  <span className="relative text-white">
-                    Get Started
-                  </span>
-                </Button>
-              </Link>
-            </div>
-          </FadeIn>
-          
-          <FadeIn delay={0.6}>
-            <p className="text-sm text-foreground/50 mt-6">
-              Start your journey to a better academic experience today.
-            </p>
-          </FadeIn>
+    <section className="py-24 lg:py-40 bg-foreground text-background border-b-2 border-primary">
+      <div className="container mx-auto px-4 lg:px-8 max-w-5xl text-center">
+        <div className={`opacity-0 ${mounted ? 'animate-fadeInUp' : ''}`}>
+           <h2 className="text-5xl md:text-8xl font-serif font-normal leading-none tracking-tight mb-8">
+             End the <br/> Guesswork.
+           </h2>
+           
+           <p className="text-xl md:text-2xl font-serif text-background/80 max-w-2xl mx-auto mb-16">
+             The course syllabus won't tell you the truth. Your peers will. Subscribe to the essential registry of ANU academics.
+           </p>
+
+           <Link href="/login" className="inline-block group">
+             <button className="flex items-center gap-4 bg-background text-foreground py-5 px-8 hover:bg-primary hover:text-primary-foreground transition-colors overflow-hidden">
+               <span className="font-mono uppercase tracking-widest text-lg font-bold">Sign In & Access Index</span>
+               <ArrowRight className="transition-transform group-hover:translate-x-2" />
+             </button>
+           </Link>
         </div>
       </div>
     </section>
   );
-}; 
+};
